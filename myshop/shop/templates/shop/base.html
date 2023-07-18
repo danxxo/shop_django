@@ -10,13 +10,16 @@
     <body>
         <div id="header">
             <a href="/" class="logo">My shop</a>
+            <a href="{% url "account:logout" %}" class="logo">Logout</a>
+            <a href="{% url "account:edit" %}" class="logo">Edit Profile</a>
         </div>
         <div id="subheader">
             <div class="cart">
                 {% if request.user.is_authenticated %}
                     {% with total_items=cart|length %}
-                        Hello, {{ request.user.first_name|default:request.user.username }}. 
-                        <a href="{% url "account:logout" %}">Logout. </a>
+                        Hello, 
+                        {% if request.user.profile.is_consumer %}consumer{% else %}seller{% endif %}
+                        {{ request.user.first_name|default:request.user.username }}. 
                         {% if total_items > 0 %}
                             Your cart:
                             <a href="{% url "cart:cart_detail" %}">

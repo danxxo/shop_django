@@ -20,7 +20,11 @@ def order_create(request):
                           'orders/order/created.html',
                           {'order': order})
     else:
-        form = OrderCreateForm()
+        user = request.user
+        data = {'first_name': user.first_name,
+                'last_name': user.last_name,
+                'email': user.email}
+        form = OrderCreateForm(data=data)
         return render(request,
                       'orders/order/create.html',
                       {'cart': cart, 'form': form})
