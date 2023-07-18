@@ -7,24 +7,29 @@
         <title>{% block title %}My shop{% endblock %}</title>
         <link rel="stylesheet" href="{% static "css/base.css" %}">
     </head>
-
     <body>
         <div id="header">
             <a href="/" class="logo">My shop</a>
         </div>
         <div id="subheader">
             <div class="cart">
-                {% with total_items=cart|length %}
-                    {% if total_items > 0 %}
-                        Your cart:
-                        <a href="{% url "cart:cart_detail" %}">
-                            {{ total_items }} item{{ total_items|pluralize }},
-                            ${{ cart.get_total_price }}
-                        </a>
-                    {% elif not order %}
-                        Your cart is empty
-                    {% endif %}
-                {% endwith %}
+                {% if request.user.is_authenticated %}
+                    {% with total_items=cart|length %}
+                        Hello, {{ request.user.first_name|default:request.user.username }}. 
+                        <a href="{% url "account:logout" %}">Logout. </a>
+                        {% if total_items > 0 %}
+                            Your cart:
+                            <a href="{% url "cart:cart_detail" %}">
+                                {{ total_items }} item{{ total_items|pluralize }},
+                                ${{ cart.get_total_price }}
+                            </a>
+                        {% elif not order %}
+                            Your cart is empty
+                        {% endif %}
+                    {% endwith %}
+                {% else %}
+                    <a href="{% url "account:login" %}">Log-in</a>
+                {% endif %}
             </div>
         </div>
 

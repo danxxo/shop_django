@@ -1,0 +1,25 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}
+    Log-in. Reg.
+{% endblock %}
+
+{% block content %}
+    <h1>Log-in</h1>
+    {% if form.errors %}
+        <p>
+            Your username or password didnt match. Try again...
+        </p>
+    {% else %}
+        <p>Please, use the following form to log-in</p>
+    {% endif %}
+    <div class="login-form">
+        <form action="{% url "account:login" %}" method="post">
+            {{ form.as_p }}
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
+            <p><input type="submit" value="log-in"></p>
+        </form>
+    </div>
+{% endblock %}
