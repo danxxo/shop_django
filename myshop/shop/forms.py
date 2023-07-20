@@ -19,6 +19,9 @@ class ProductCreateForm(forms.ModelForm):
             'category',
             'available'
         ]
+        widgets = {
+            'description': forms.Textarea(attrs={'cols': 60, 'rows': 10})
+        }
     slug = forms.CharField(initial='!default initial slug!')
     
     def clean_slug(self):

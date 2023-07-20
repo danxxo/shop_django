@@ -33,10 +33,10 @@ def product_detail(request, id, slug):
 
 def create_product(request):
     if request.method == 'POST':
-        product_form = ProductCreateForm(request.POST)
+        product_form = ProductCreateForm(request.POST, request.FILES)
         if product_form.is_valid():
             product_form.save()
-            #redirect('/')
+            return redirect('/')
     else:
         product_form = ProductCreateForm()
     return render(request, 
