@@ -137,6 +137,10 @@ ul.errorlist {
     margin-right:1%;
 }
 
+#header .logo:hover {
+    color: red;
+}
+
 #subheader .cart {
     float:right;
     padding-top:4px;
@@ -328,3 +332,4 @@ form div.field {
     color:#666;
     border-radius:4px;
 }
+

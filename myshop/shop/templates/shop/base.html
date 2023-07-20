@@ -12,6 +12,9 @@
             <a href="/" class="logo">My shop</a>
             <a href="{% url "account:logout" %}" class="logo">Logout</a>
             <a href="{% url "account:edit" %}" class="logo">Edit Profile</a>
+            {% if request.user.is_authenticated and not request.user.profile.is_consumer%}
+                <a href="{% url "shop:create_product" %}" class="logo" style="color: cadetblue;">add product</a>
+            {% endif %}
         </div>
         <div id="subheader">
             <div class="cart">

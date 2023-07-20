@@ -1,0 +1,18 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}
+    Add product
+{% endblock %}
+
+
+{% block content %}
+    <h1>Create your product hear</h1>
+    <h1>If you need to create Category for products: follow the <a href="{% url "shop:create_category" %}">Link</a></h1>
+    <form method="post" enctype="multipart/form-data">
+        {{ product_form.as_p }}
+        <p><input type="submit" value="Place product"></p>
+        {% csrf_token %}
+    </form>
+
+{% endblock %}

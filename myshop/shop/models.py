@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.utils.text import slugify
 
 class Category(models.Model):
     name = models.CharField(max_length=200)
@@ -15,6 +16,12 @@ class Category(models.Model):
 
     def get_absolute_url(self):
         return reverse('shop:product_list_by_category', args=[self.slug])
+    
+    def save(self, *args, **kwargs):
+        print('save func')
+        if self.slug is None:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.name
@@ -41,6 +48,10 @@ class Product(models.Model):
             models.Index(fields=['-created']),
         ]
 
+    def save(self, *args, **kwargs):
+        if self.slug is None:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse('shop:product_detail', args=[self.id, self.slug])

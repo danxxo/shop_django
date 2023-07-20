@@ -1,0 +1,18 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}
+    Add category
+{% endblock %}
+
+
+{% block content %}
+    <h1>Create your Category hear</h1>
+    <p>Do not touch slug field idk how to do it better. TODO</p>
+    <form method="post">
+        {{ category_form.as_p }}
+        <p><input type="submit" value="Create category"></p>
+        {% csrf_token %}
+    </form>
+
+{% endblock %}

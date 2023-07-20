@@ -1,6 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, HttpResponse, redirect
 from .models import Category, Product
 from cart.forms import CartAddProductForm
+from .forms import ProductCreateForm, CategoryCreateForm
+from django.utils.text import slugify
 
 def product_list(request, category_slug=None):
     category = None
@@ -28,3 +30,30 @@ def product_detail(request, id, slug):
                   'shop/product/detail.html',
                   {'product': product,
                    'cart_product_form': cart_product_form})
+
+def create_product(request):
+    if request.method == 'POST':
+        product_form = ProductCreateForm(request.POST)
+        if product_form.is_valid():
+            product_form.save()
+            #redirect('/')
+    else:
+        product_form = ProductCreateForm()
+    return render(request, 
+                  'shop/product/create.html',
+                  {'product_form': product_form})
+
+def create_category(request):
+    if request.method == 'POST':
+        category_form = CategoryCreateForm(request.POST)
+        print(category_form.is_valid())
+        if category_form.is_valid():
+            category_form.save()
+            print('POST')
+            return redirect('/')
+    else:
+        category_form = CategoryCreateForm()
+        print("GET")
+        return render(request,
+                      'shop/product/create_category.html',
+                      {'category_form': category_form})
