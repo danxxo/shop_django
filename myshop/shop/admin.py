@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product
+from .models import Category, Product, UploadedCSV
 
 #log_admin
 
@@ -21,4 +21,11 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ['available', 'created', 'updated']
     list_editable = ['price', 'available']
     prepopulated_fields = {'slug': ('name',)}
+
+@admin.register(UploadedCSV)
+class CSVAdmin(admin.ModelAdmin):
+    list_display = [
+        'consumer',
+        'csv'
+    ]
 

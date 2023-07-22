@@ -10,5 +10,6 @@ urlpatterns = [
     path('<int:id>/<slug:slug>/', views.product_detail, name='product_detail'),
     path('shop/add/', views.create_product, name='create_product'),
     path('shop/add/category', views.create_category, name='create_category'),
+    path('shop/add/csv', views.upload_csv, name='upload_csv'),
     
 ]

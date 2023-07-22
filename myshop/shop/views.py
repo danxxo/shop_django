@@ -1,8 +1,11 @@
 from django.shortcuts import render, get_object_or_404, HttpResponse, redirect
-from .models import Category, Product
+from .models import Category, Product, UploadedCSV
 from cart.forms import CartAddProductForm
-from .forms import ProductCreateForm, CategoryCreateForm
+from .forms import ProductCreateForm, CategoryCreateForm, UploadCSVForm
 from django.utils.text import slugify
+from django.conf import settings
+from .csv_processing import process_csv
+import datetime
 
 def product_list(request, category_slug=None):
     category = None
@@ -57,3 +60,20 @@ def create_category(request):
         return render(request,
                       'shop/product/create_category.html',
                       {'category_form': category_form})
+    
+def upload_csv(request):
+    if request.method == 'POST':
+        csv_form = UploadCSVForm(request.POST, request.FILES)
+        if csv_form.is_valid():
+            curr_date_path = datetime.date.today().strftime("/upload_csv/%Y/%m/%d/")
+            csv_form.save()
+            file_name = str(csv_form.cleaned_data['csv'])
+            file_path = str(settings.MEDIA_ROOT) + curr_date_path + file_name
+            process_csv(file_path)
+            return redirect('/')
+    else:
+        csv_form = UploadCSVForm(initial={'consumer': str(request.user)})
+        return render(request,
+                      'shop/product/csv_handler.html',
+                      {'csv_form': csv_form})
+

@@ -1,0 +1,15 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}
+    CSV
+{% endblock %}
+
+{% block content %}
+<h1>Here you can upload your product list using CSV</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ csv_form.as_p }}
+    <input type="submit" value="Upload">
+</form>
+{% endblock %}

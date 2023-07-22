@@ -1,11 +1,12 @@
 from django import forms
-from .models import Category, Product
+from .models import Category, Product, UploadedCSV
 from django.utils.text import slugify
 
 class ProductCreateForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['slug'].widget.attrs['readonly'] = True
         self.fields['category'].empty_label = "Категория не выбрана"
 
     class Meta:
@@ -43,6 +44,10 @@ class CategoryCreateForm(forms.ModelForm):
 
         widgets = {'slug': forms.HiddenInput()}
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['slug'].widget.attrs['readonly'] = True
+
     def clean_slug(self):
         slug = self.cleaned_data.get('slug')
         if not slug or slug == '!default initial slug!':
@@ -52,3 +57,15 @@ class CategoryCreateForm(forms.ModelForm):
         return slug
 
     slug = forms.CharField(initial='!default initial slug!')
+
+class UploadCSVForm(forms.ModelForm):
+    class Meta:
+        model = UploadedCSV
+        fields = [
+            'consumer',
+            'csv'
+        ]
+
+    def __init__(self, *args, default_user_name='user', **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['consumer'].widget.attrs['readonly'] = True

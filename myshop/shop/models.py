@@ -60,4 +60,9 @@ class Product(models.Model):
         return self.name
     
 
+class UploadedCSV(models.Model):
+    consumer = models.CharField(max_length=30)
+    csv = models.FileField(upload_to='upload_csv/%Y/%m/%d')
+    
+
 
