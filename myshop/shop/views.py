@@ -66,8 +66,10 @@ def upload_csv(request):
         csv_form = UploadCSVForm(request.POST, request.FILES)
         if csv_form.is_valid():
             curr_date_path = datetime.date.today().strftime("/upload_csv/%Y/%m/%d/")
-            csv_form.save()
             file_name = str(csv_form.cleaned_data['csv'])
+            if not file_name.endswith(".csv"):
+                return HttpResponse(f"Uploaded file is not CSV format. Your file: {str(file_name)}")
+            csv_form.save()
             file_path = str(settings.MEDIA_ROOT) + curr_date_path + file_name
             process_csv(file_path)
             return redirect('/')
