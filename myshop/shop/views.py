@@ -38,6 +38,7 @@ def create_product(request):
     if request.method == 'POST':
         product_form = ProductCreateForm(request.POST, request.FILES)
         if product_form.is_valid():
+            print(product_form.cleaned_data)
             product_form.save()
             return redirect('/')
     else:

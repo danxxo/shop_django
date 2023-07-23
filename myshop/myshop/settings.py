@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+from django.core.validators import RegexValidator
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +26,7 @@ SECRET_KEY = 'django-insecure-2%d6h+ph5w_qyl$a195doi3duq_(t@(kx+32l*s-fav-^%*tmc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["0.0.0.0"]
+ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1"]
 
 
 # Application definition
@@ -137,3 +138,6 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = 'account:login'
 LOGOUT_URL = 'account:logout'
+
+SQL_INJECTION_VALIDATOR = RegexValidator('[\'\"+-=]', inverse_match=True, message="Avoid quotation and math operators")
+SQL_INJECTION_FORM_VALIDATOR = RegexValidator('[\'\"+-=]', inverse_match=True, message="Bad input")
