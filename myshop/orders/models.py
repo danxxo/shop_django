@@ -1,9 +1,16 @@
 from django.db import models
 from shop.models import Product
 from django.conf import settings
+from account.models import Profile
 
 
 class Order(models.Model):
+
+    # username = models.ForeignKey(Profile,
+    #                              on_delete=models.CASCADE,
+    #                              null=True,
+    #                              blank=True)
+
     first_name = models.CharField(max_length=50,
                                   validators=[settings.SQL_INJECTION_VALIDATOR])
     last_name = models.CharField(max_length=50,

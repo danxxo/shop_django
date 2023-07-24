@@ -23,6 +23,7 @@ def order_create(request):
                           {'order': order})
     else:
         user = request.user
+        print(user.username)
         data = {'first_name': user.first_name,
                 'last_name': user.last_name,
                 'email': user.email}
@@ -30,3 +31,8 @@ def order_create(request):
         return render(request,
                       'orders/order/create.html',
                       {'cart': cart, 'form': form})
+    
+
+@login_required
+def my_orders(request):
+    ...
