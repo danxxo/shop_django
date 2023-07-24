@@ -13,3 +13,6 @@ class OrderCreateForm(forms.ModelForm):
             'postal_code',
             'city'
         ]
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['first_name'].widget.attrs['readonly'] = True

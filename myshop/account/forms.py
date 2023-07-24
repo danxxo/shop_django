@@ -20,6 +20,10 @@ class UserRegistrationForm(forms.ModelForm):
             #'Consumer'
         ]
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['first_name'].required = True
+
     def clean_password2(self):
         cd = self.cleaned_data
         if cd['password'] != cd['password2']:
@@ -34,6 +38,9 @@ class UserEditForm(forms.ModelForm):
             'last_name',
             'email'
         ]
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['first_name'].required = True
 
 class ProfileEditForm(forms.ModelForm):
     class Meta:
