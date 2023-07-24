@@ -1,9 +1,65 @@
 {% extends "shop/base.html" %}
+{% load static %}
 
 {% block title %}
     Thank you
 {% endblock %}
 
 {% block content %}
+
+    {% for order, order_items in orders.items %}
+        {% if order_items|length > 0 %}
+            <table class="cart">
+                <thead>
+                    <tr>
+                        <th>Order Number</th>
+                        <th>First_name</th>
+                        <th>City</th>
+                        <th>Address</th>
+                        <th>Paid</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>{{order.id}}</th>
+                        <th>{{order.first_name}}</th>
+                        <th>{{order.city}}</th>
+                        <th>{{order.address}}</th>
+                        <th>{{order.paid}}</th>
+                    </tr>
+                    <tr>
+                        <th>Image</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price per one</th>
+                    </tr>
+                    {% for order_item in order_items %}
+                        <tr>
+                            <th>
+                                <img src="{% if order_item.product.image %}{{ order_item.product.image.url }}
+                                {% else %}{% static "img/no_image.png" %}{% endif %}">
+                            </th>
+                            <th>{{ order_item.product.name }}</th>
+                            <th>
+                                x{{order_item.quantity}}
+                            </th>
+                            <th>${{order_item.product.price}}</th>
+                        </tr>
+                    {% endfor %}
+                    <tr style="background-color: cadetblue;">
+                        <th>Order was created: {{order.created}}</th>
+                    </tr>
+                    <tr>
+                        <th>
+                            {% if not order.paid %}
+                                <p></p>
+                                <a href="" class="button">Pay</a>
+                            {% endif %}
+                        </th>
+                    </tr>
+                </tbody>
+            </table>
+        {% endif %}
+    {% endfor %}
 
 {% endblock %}

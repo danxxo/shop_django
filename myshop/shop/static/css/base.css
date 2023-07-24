@@ -70,6 +70,7 @@ thead th, tbody tr.total {
 
 table.cart {
     margin-bottom:40px;
+    border: 1px solid;
 }
 
 table.cart img {

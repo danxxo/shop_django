@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import OrderItem
+from .models import OrderItem, Order
 from .forms import OrderCreateForm
 from cart.cart import Cart
 from django.contrib.auth.decorators import login_required
@@ -26,11 +26,11 @@ def order_create(request):
             return render(request,
                           'orders/order/created.html',
                           {'order': order})
+        else:
+            print(form.errors)
     else:
         user = request.user
         profile = Profile.objects.get(user=user)
-        # profile = Profile.objects.get(user=user)
-        # print(profile)
         data = {'username': profile,
                 'first_name': user.first_name,
                 'last_name': user.last_name,
@@ -41,9 +41,18 @@ def order_create(request):
                       {'cart': cart, 'form': form})
     
 
-# @login_required
-# def my_orders(request):
-#     user = request.user
-#     print(user)
-#     return render(request,
-#                   'orders/order/my_orders.html')
+@login_required
+def my_orders(request):
+    user = request.user
+    profile = Profile.objects.get(user=user)
+    orders = Order.objects.filter(username=profile)
+    orders_to_post = {}
+    for order in orders:
+        orders_to_post[order] = list(OrderItem.objects.filter(order=order))
+    print(orders_to_post)
+    
+    
+    print(user)
+    return render(request,
+                  'orders/order/my_orders.html',
+                  {'orders': orders_to_post})
