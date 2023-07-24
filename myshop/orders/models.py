@@ -6,10 +6,8 @@ from account.models import Profile
 
 class Order(models.Model):
 
-    # username = models.ForeignKey(Profile,
-    #                              on_delete=models.CASCADE,
-    #                              null=True,
-    #                              blank=True)
+    username = models.ForeignKey(Profile,
+                                 on_delete=models.CASCADE)
 
     first_name = models.CharField(max_length=50,
                                   validators=[settings.SQL_INJECTION_VALIDATOR])
