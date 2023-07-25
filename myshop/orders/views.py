@@ -49,7 +49,6 @@ def my_orders(request):
     orders_to_post = {}
     for order in orders:
         orders_to_post[order] = list(OrderItem.objects.filter(order=order))
-    print(orders_to_post)
     
     
     print(user)

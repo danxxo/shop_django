@@ -6,6 +6,7 @@
         <meta charset="utf-8" />
         <title>{% block title %}My shop{% endblock %}</title>
         <link rel="stylesheet" href="{% static "css/base.css" %}">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.1/chart.min.js" integrity="sha512-dSQ0+Nf7kea2xLsbaig6H1m1RpNmWqfzz8/OzFvk5XHcBQbae+TVtA3dVIJoyLre8pqhOef4tRv6Ftx1S7yK1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     </head>
     <body>
         <div id="header">
@@ -17,6 +18,9 @@
             <a href="{% url "account:edit" %}" class="logo">Edit Profile</a>
             {% if request.user.is_authenticated and not request.user.profile.is_consumer%}
                 <a href="{% url "shop:create_product" %}" class="logo" style="color: cadetblue;">add product</a>
+            {% endif %}
+            {% if request.user.is_staff %}
+                <a href="{% url "chartapp:index" %}" class="logo" style="color: red;">Statistics</a>
             {% endif %}
         </div>
         <div id="subheader">

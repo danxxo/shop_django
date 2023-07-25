@@ -189,6 +189,14 @@ ul.errorlist {
     overflow:hidden;
 }
 
+#block_container
+{
+    display: flex;
+}
+#block1, #block2 {
+    display: inline;
+}
+
 .product-list .item {
     width:25%;
     padding:10px 20px 10px 0;
@@ -228,6 +236,10 @@ ul.errorlist {
 
 .order-form {
     float:left;
+}
+
+.chartBox {
+    width: 300px;
 }
 
 .order-info {
