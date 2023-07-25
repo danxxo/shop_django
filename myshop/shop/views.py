@@ -5,6 +5,8 @@ from .forms import ProductCreateForm, CategoryCreateForm, UploadCSVForm
 from django.utils.text import slugify
 from django.conf import settings
 from .csv_processing import process_csv
+from account.models import Profile
+from django.contrib.auth.decorators import login_required
 import datetime
 
 def product_list(request, category_slug=None):
@@ -34,6 +36,8 @@ def product_detail(request, id, slug):
                   {'product': product,
                    'cart_product_form': cart_product_form})
 
+
+@login_required    
 def create_product(request):
     if request.method == 'POST':
         product_form = ProductCreateForm(request.POST, request.FILES)
@@ -42,11 +46,18 @@ def create_product(request):
             product_form.save()
             return redirect('/')
     else:
-        product_form = ProductCreateForm()
+        user = request.user
+        profile = Profile.objects.get(user=user)
+        data={'consumer_profile': profile,
+              'slug': '!default initial slug!',
+              'available': True}
+        product_form = ProductCreateForm(data=data)
     return render(request, 
                   'shop/product/create.html',
                   {'product_form': product_form})
 
+
+@login_required    
 def create_category(request):
     if request.method == 'POST':
         category_form = CategoryCreateForm(request.POST)
@@ -61,7 +72,8 @@ def create_category(request):
         return render(request,
                       'shop/product/create_category.html',
                       {'category_form': category_form})
-    
+
+@login_required    
 def upload_csv(request):
     if request.method == 'POST':
         csv_form = UploadCSVForm(request.POST, request.FILES)
@@ -72,7 +84,8 @@ def upload_csv(request):
                 return HttpResponse(f"Uploaded file is not CSV format. Your file: {str(file_name)}")
             csv_form.save()
             file_path = str(settings.MEDIA_ROOT) + curr_date_path + file_name
-            process_csv(file_path)
+            profile = Profile.objects.get(user=request.user)
+            process_csv(file_path, profile)
             return redirect('/')
     else:
         csv_form = UploadCSVForm(initial={'consumer': str(request.user)})

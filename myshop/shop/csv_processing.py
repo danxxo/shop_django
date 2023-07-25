@@ -39,13 +39,11 @@ def procces_csv_categories(file_path):
         except Category.DoesNotExist:
             Category.objects.create(name=category, slug=slugify(category))
 
-def process_csv(file_path):
+def process_csv(file_path, profile_csv_owner):
 
     procces_csv_categories(file_path)
 
     tmp_data = pd.read_csv(file_path, sep=',')
-
-    print(tmp_data.loc[0, 'price'], "TMPMTPTMPT")
 
     products = []
     exceptions = []
@@ -69,7 +67,8 @@ def process_csv(file_path):
             name=name,
             slug=slugify(name),
             description=description,
-            price=Decimal(tmp_data.loc[row, 'price'].item())
+            price=Decimal(tmp_data.loc[row, 'price'].item()),
+            consumer_profile=profile_csv_owner
         )]
     if exceptions:
         print('Exceptions was added: ', exceptions)

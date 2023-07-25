@@ -139,5 +139,5 @@ LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = 'account:login'
 LOGOUT_URL = 'account:logout'
 
-SQL_INJECTION_VALIDATOR = RegexValidator('[\'\"+-=]', inverse_match=True, message="Avoid quotation and math operators")
+SQL_INJECTION_VALIDATOR = RegexValidator('[\'\"+=]', inverse_match=True, message="Avoid quotation and math operators")
 SQL_INJECTION_FORM_VALIDATOR = RegexValidator('[\'\"+-=]', inverse_match=True, message="Bad input")

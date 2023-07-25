@@ -18,10 +18,12 @@ class ProductCreateForm(forms.ModelForm):
             'description',
             'price',
             'category',
-            'available'
+            'available',
+            'consumer_profile'
         ]
         widgets = {
-            'description': forms.Textarea(attrs={'cols': 60, 'rows': 10})
+            'description': forms.Textarea(attrs={'cols': 60, 'rows': 10}),
+            'consumer_profile': forms.HiddenInput()
         }
     slug = forms.CharField(initial='!default initial slug!')
     
