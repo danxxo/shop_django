@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 from django.conf import settings
+from account.models import Profile
 
 class Category(models.Model):
     name = models.CharField(max_length=200,
@@ -41,6 +42,10 @@ class Product(models.Model):
                                    validators=[settings.SQL_INJECTION_VALIDATOR])
     price = models.DecimalField(max_digits=10, decimal_places=2)
     available = models.BooleanField(default=True)
+    consumer_profile = models.ForeignKey(Profile,
+                                         on_delete=models.CASCADE,
+                                         blank=True,
+                                         null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

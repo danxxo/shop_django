@@ -15,6 +15,7 @@ class ProductAdmin(admin.ModelAdmin):
         'slug',
         'price',
         'available',
+        'consumer_profile',
         'created',
         'updated'
     ]
