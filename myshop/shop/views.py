@@ -64,11 +64,9 @@ def create_category(request):
         print(category_form.is_valid())
         if category_form.is_valid():
             category_form.save()
-            print('POST')
             return redirect('/')
     else:
         category_form = CategoryCreateForm()
-        print("GET")
         return render(request,
                       'shop/product/create_category.html',
                       {'category_form': category_form})

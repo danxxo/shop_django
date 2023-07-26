@@ -12,9 +12,7 @@ def order_create(request):
     cart = Cart(request)
     if request.method == 'POST':
         form = OrderCreateForm(request.POST)
-        print('smvornvoinpn')
-        print(form.is_valid())
-        print(form.fields['username'])
+
         if form.is_valid():
             order = form.save()
             for item in cart:

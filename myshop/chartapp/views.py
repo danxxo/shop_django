@@ -3,41 +3,35 @@ from shop.models import Category, Product
 from account.models import Profile
 from orders.models import Order, OrderItem
 from django.contrib.admin.views.decorators import staff_member_required
+from .forms import DateForm
 
+from .chartapp import get_top_products, get_users_vs_consumers, get_category_amount
 
 
 @staff_member_required
 def index(request):
 
-    categry_amount = {}
+    category_amount = get_category_amount()
 
-    categories = list(Category.objects.all())
-    for cat in categories:
-        categry_amount[cat] = Product.objects.filter(category=cat).count()
+    users_count = get_users_vs_consumers()
+            
+    if request.method == 'POST':
+        dateform = DateForm(request.POST)
+        start = request.POST.get('start')
+        end = request.POST.get('end')
+        choice = request.POST.get('choice')
+        
+        
+        top_products = get_top_products(start, end, choice)
 
-    all_users_count = Profile.objects.all().count()
-    consumers_users_count = Profile.objects.filter(is_consumer=True).count()
-    sellers_users_count = all_users_count - consumers_users_count
-
-    users_count = {
-        'consumers': consumers_users_count,
-        'sellers': sellers_users_count
-    }
-
-    # Top products according to orders
-    all_orders = Order.objects.all()
-    top_products = {}
-    for order in all_orders:
-        order_items = OrderItem.objects.filter(order=order)
-        for order_item in order_items:
-            if order_item.product.name not in top_products:
-                top_products[order_item.product.name] = order_item.quantity
-            else:
-                top_products[order_item.product.name] += order_item.quantity
+    else:
+        top_products = get_top_products(None, None, 4)
+        dateform = DateForm()
     
-    data = {'categories': categry_amount,
+    data = {'categories': category_amount,
             'users_count': users_count,
-            'top_products': top_products}
+            'top_products': top_products,
+            'form': dateform}
 
     return render(request,
                   'charts/main.html',
